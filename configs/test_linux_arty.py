@@ -16,8 +16,9 @@ from litex_hw_ci import LiteXCIConfig, LiteXCITest, get_local_ip
 # - VexRiscv 32-bit / 1 Core / AXI-Lite Bus.
 # - VexRiscv 32-bit / 1 Core / AXI Bus.
 
-local_ip    = "192.168.1.50"
-remote_ip   = get_local_ip()
+local_ip    = "192.168.31.50"
+remote_ip    = "192.168.31.51"
+#remote_ip   = get_local_ip()
 
 linux_build_args = "--clean --build --generate-dtb --prepare-tftp --copy-images"
 
@@ -94,6 +95,23 @@ litex_ci_configs = {
         --with-ethernet --eth-ip={local_ip} --remote-ip={remote_ip} \
         --with-spi-sdcard \
         --with-usb",
+        software_command = "cd linux && python3 make.py {output_dir}/soc.json " + linux_build_args,
+        setup_command    = "",
+        exit_command     = "",
+        tty              = "/dev/ttyUSB1",
+        tests            = tests,
+    ),
+    # Digilent Arty running Rocket with:
+    # - 1 Core
+    # - Ethernet 100Mbps
+    # - SPI-SDCard through Digilent PMOD on PMOD D formated as Fat32.
+    "arty_rocket_1_core": LiteXCIConfig(
+        target           = "digilent_arty",
+        gateware_command = f"--sys-clk-freq 50e6 \
+        --variant a7-100 \
+        --cpu-type=rocket --cpu-num-cores=1 --cpu-mem-width=4 --cpu-variant=full \
+        --with-ethernet --eth-ip={local_ip} --remote-ip={remote_ip} \
+        --with-spi-sdcard",
         software_command = "cd linux && python3 make.py {output_dir}/soc.json " + linux_build_args,
         setup_command    = "",
         exit_command     = "",
