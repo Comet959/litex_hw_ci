@@ -41,7 +41,7 @@ def switch_dir(path):
 # Linux Build --------------------------------------------------------------------------------------
 
 buildroot_url = "http://github.com/buildroot/buildroot"
-tftp_root     = "/tftpboot"
+tftp_root     = "/var/lib/tftpboot"
 motd_path     = "buildroot/board/litex/rootfs_overlay/etc/motd"
 
 def linux_clean():
